@@ -2,11 +2,11 @@
 
 ## Automated checks
 
-Validated locally against Paseo 0.9.1 and the host Pi SDK 1.0.0:
+Validated locally against Paseo 0.11.0-beta.3 (SDK packages 0.11.2) and the host Pi SDK 1.0.0:
 
-- **47 tests passed** across seven suites, including the optional installed-host checks.
+- **53 tests passed** across eight suites, including the optional installed-host checks.
 - `npm run typecheck` passed.
-- `npm audit` reported zero vulnerabilities in this project's dependency tree. The separately installed Pi runtime is outside that audit.
+- `npm audit` reports advisories only in transitive dev dependencies (for example `braces`, `sprintf-js`); none ship with the plugin. The separately installed Pi runtime is outside that audit.
 - Both plugin entries compiled from a clean source copy **without node_modules**.
 - The plugin reloaded successfully on the running daemon without restarting it.
 

@@ -12,7 +12,7 @@ Works with any Paseo conversation provider. Question extraction uses **Pi on the
 
 ## Requirements
 
-- Paseo **0.9.1** with plugins enabled. This version targets Paseo 0.9.x.
+- Paseo **0.11** with plugins enabled. This version targets Paseo 0.11.x.
 - Node.js **22.19.0 or newer** on the daemon host.
 - The npm installation of `@earendil-works/pi-coding-agent` **1.0.0 or newer**, with authentication configured for the same OS user as the daemon.
 - At least one authenticated Pi model. Standalone Pi binaries without the SDK are not supported.
