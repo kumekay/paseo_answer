@@ -33,7 +33,13 @@ export async function findPiDirectory(): Promise<string> {
       let binary: string;
       try { binary = await realpath(join(binDirectory, name)); } catch { continue; }
       for (let directory = dirname(binary);;) {
-        for (const root of [directory, join(directory, "node_modules", "@earendil-works/pi-coding-agent")]) {
+        const roots = [directory, join(directory, "node_modules", "@earendil-works/pi-coding-agent")];
+        // The managed installer puts a launcher script in <agent>/bin and the SDK in a versioned release.
+        try {
+          const version = (await readFile(join(directory, "install", "current-version"), "utf8")).trim();
+          roots.push(join(directory, "install", "releases", version, "node_modules", "@earendil-works/pi-coding-agent"));
+        } catch { /* Not a managed install. */ }
+        for (const root of roots) {
           try {
             const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
             if (manifest.name === "@earendil-works/pi-coding-agent") return root;
