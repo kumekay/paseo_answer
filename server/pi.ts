@@ -44,7 +44,8 @@ export function createPiExtractor(load: () => Promise<PiRuntime>): Extractor {
       } finally { clearTimeout(timeout); }
       if (response.stopReason !== "stop") throw new Error(`Extraction failed (${response.stopReason}): ${response.errorMessage ?? "incomplete model response"}`);
       const output = response.content.filter(part => part.type === "text").map(part => part.text).join("\n");
-      const fenced = output.match(/```(?:json)?\s*([\s\S]*?)```/);
+      // Only an outer fence; contexts can hold code blocks copied from the reply.
+      const fenced = output.trim().match(/^```(?:json)?\s*([\s\S]*)```$/);
       const json = fenced?.[1] ?? output;
       return QuestionsSchema.parse(JSON.parse(json.trim())).questions;
     },

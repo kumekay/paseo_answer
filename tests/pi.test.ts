@@ -23,3 +23,13 @@ test("Pi extraction accepts explicit single/multiple choices and plain-text ques
     { question: "Any constraints?", mode: "text", context: "", options: [] },
   ]);
 });
+
+test.each([
+  ["plain", (json: string) => json],
+  ["fenced", (json: string) => "```json\n" + json + "\n```"],
+])("Pi extraction keeps code fences inside %s JSON strings", async (_, wrap) => {
+  const question = { question: "Run it?", context: "```bash\nsudo python setup.py\n```", mode: "text", options: [] };
+  const text = wrap(JSON.stringify({ questions: [question] }));
+  const extractor = createPiExtractor(async () => runtime({ stopReason: "stop", content: [{ type: "text", text }] }));
+  expect(await extractor.extract({ provider: "example", id: "small" }, "Run it?")).toEqual([question]);
+});
